@@ -48,8 +48,8 @@ fn run(mut int_code: Vec<i32>, position: usize) -> Vec<i32> {
     }
 }
 
-fn read_file(fileName: &str) -> String {
-    let path = Path::new(&fileName);
+fn read_file(file_name: &str) -> String {
+    let path = Path::new(&file_name);
     let display = path.display();
 
     let mut file = match File::open(&path) {
@@ -75,16 +75,41 @@ fn csv_to_vector(csv: String) -> Vec<i32> {
         .collect();
 }
 
-fn main() {
-    let args: Vec<String> = env::args().collect();
-    let file = &args[1];
-
+fn part_1(file: &str) {
     let mut int_code = csv_to_vector(read_file(file));
 
     std::mem::replace(&mut int_code[1], 12);
     std::mem::replace(&mut int_code[2], 2);
 
-    println!("{:?}", run(int_code, 0));
+    println!("Part 1: {:?}", run(int_code, 0)[0]);
+}
+
+fn part_2(file: &str) {
+    let content = read_file(file);
+
+    'noun: for noun in 0..173 {
+        'verb: for verb in 0..173 {
+            let mut int_code = csv_to_vector(content.clone());
+
+            std::mem::replace(&mut int_code[1], noun);
+            std::mem::replace(&mut int_code[2], verb);
+
+            let value = run(int_code, 0)[0];
+
+            if value == 19690720 {
+                println!("Part 2: {:?}", 100 * noun + verb);
+                break 'noun;
+            }
+        }
+    }
+}
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+    let file = &args[1];
+
+    part_1(file);
+    part_2(file);
 }
 
 #[cfg(test)]
