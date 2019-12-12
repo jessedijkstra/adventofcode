@@ -16,6 +16,10 @@ fn get_positions(int_code: &[i32], position: usize) -> (usize, usize, usize) {
     );
 }
 
+fn set_for_(mut int_code: Vec<i32>, position, ) {
+
+}
+
 fn run(mut int_code: Vec<i32>, position: usize) -> Vec<i32> {
     match int_code.get(position) {
         Some(&ADD_OP_CODE) => {
